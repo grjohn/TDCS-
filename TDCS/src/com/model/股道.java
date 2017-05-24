@@ -8,7 +8,7 @@ public class 股道 {
 	public 股道(){
 		空闲=1;
 		锁闭=0;
-		颜色="灰色";
+		颜色="灰";
 	}
 	
 	public void setcolor(String 颜色){							//////////数据查询修改
@@ -22,11 +22,11 @@ public class 股道 {
 		this.空闲=空闲;
 		if(空闲==1)
 		{
-			颜色="灰色";
+			颜色="灰";
 		}
 		else
 		{
-			颜色="红色";
+			颜色="红";
 		}
 	}
 	public int getclean(){
@@ -37,11 +37,12 @@ public class 股道 {
 		this.锁闭=锁闭;
 		if(锁闭==1)
 		{
-			颜色="白色";
+			颜色="白";
 		}
 		else
 		{
-			颜色="灰色";
+			颜色="灰";
+			空闲=1;
 		}
 	}
 	public int getblock(){

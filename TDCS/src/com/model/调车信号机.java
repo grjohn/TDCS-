@@ -1,12 +1,12 @@
 package com.model;
 
-public class 出站信号机 {
+public class 调车信号机 {
 	private String 信号机颜色; //信号机灯光
 	private int 防护区段空闲;	//防护区段是否占用
 	private int 下一区段空闲;	//下一个区段是否占用
 	
-	public 出站信号机(){												//初始化
-		信号机颜色="红";
+	public 调车信号机(){												//初始化
+		信号机颜色="蓝色";
 		防护区段空闲=1;//不占用
 		下一区段空闲=1;//不占用
 	}
@@ -32,13 +32,4 @@ public class 出站信号机 {
 		return 下一区段空闲;
 	}																///////////
 	
-	public String banlifache(int 锁闭){								//查看能否办理进路
-		if(防护区段空闲==1&&下一区段空闲==1&&锁闭==0) //信号机前后都不占用且线路未锁闭
-		{
-			信号机颜色="单黄";
-			return "可以办理发车";
-		}
-		else
-		return "不能办理发车";		
-	}
 }
