@@ -20,20 +20,24 @@ public class 执行窗体 extends JFrame{
 	public 执行窗体() throws InterruptedException{											//整体窗口的构造函数
 		this.setTitle("北京西站站场图(局部)");
 		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-		this.setSize(1200, 900);
+		this.setSize(1200, 550);
 		this.setVisible(true);
+		this.getContentPane().add(zhanchangtu, BorderLayout.CENTER);
+		
+		JPanel panel = new JPanel();
+		getContentPane().add(panel, BorderLayout.SOUTH);
+		panel.setLayout(new BorderLayout(0, 0));
 		JPanel states = new JPanel();
+		panel.add(states);
 		states.setBackground(new Color(240, 240, 240));
-		this.getContentPane().add(states, BorderLayout.NORTH);
-		states.setLayout(new BorderLayout(0, 0));
+		states.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JTextArea textstates = new JTextArea(6,30);
 		textstates.setFont(new Font("微软雅黑", Font.PLAIN, 17));
 		textstates.setLineWrap(true);
 		states.add(textstates);
-		this.getContentPane().add(zhanchangtu, BorderLayout.CENTER);
-//		textstates.setText(l1.diaoched1_S1()+"\r\n");
-		textstates.append(l1.diaoched1_S2(this));	
+		textstates.setText("-----实时显示-----\r\n");
+		textstates.append(l1.cexianjiecheX_S1(this));	
 //	public 执行窗体() throws InterruptedException{											//整体窗口的构造函数
 //		this.setTitle("北京西站站场图(局部)");
 //		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
@@ -79,8 +83,7 @@ public class 执行窗体 extends JFrame{
 	
 	public 站场图(连锁表 l1){
 		System.out.println("1st");
-
-		this.setBackground(Color.green);
+		this.setBackground(new Color(133,218,133));
 	}
 		
 	public void paint(Graphics g2) {				//整个场站图的绘制
