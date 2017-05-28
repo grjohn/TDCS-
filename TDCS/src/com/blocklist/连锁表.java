@@ -7,7 +7,7 @@ import javax.swing.*;
 import com.model.*;
 
 public class 连锁表 {
-	public final long time=1000;			//列车的行驶速度时间
+	public final long time=2000;			//列车的行驶速度时间
 	public 调车信号机 d1;
 	public 出站兼调车信号机 s1,s2;
 	public 进站信号机 x;
@@ -282,7 +282,7 @@ public class 连锁表 {
 		else
 			{
 				setCurrentTime();
-				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理s1至d1调车\r\n");		
+				j.setText(hour+":"+minute+":"+second+"---"+"不可以办理s1至d1调车\r\n");		
 			}
 			}}.start();
 			return null;

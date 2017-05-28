@@ -222,7 +222,6 @@ public class 执行窗体 extends JFrame{
 	public class 站场图 extends JPanel{
 	
 	public 站场图(连锁表 l1){
-		System.out.println("1st");
 		this.setBackground(new Color(133,218,133));
 	}
 		
@@ -238,7 +237,7 @@ public class 执行窗体 extends JFrame{
 		g.setColor(l1.xdg.getcolor());
 		g.draw(line);g.drawString("xdg", 30+intx, 210+lnty);
 
-		g.setColor(l1.x.getcolor());System.out.println(l1.x.getcolor());							//x
+		g.setColor(l1.x.getcolor());							//x
 		g.fillOval(83+intx, 150+lnty, 40,40);
 		if(l1.x.getcolor()==Color.orange) g.fillOval(123+intx, 150+lnty, 40, 40);
 		
@@ -291,7 +290,6 @@ public class 执行窗体 extends JFrame{
 		g.draw(line);
 		line=new Line2D.Float(283+inx, 190+lny, 283+inx, 150+lny);g.drawString("d1", 283+intx, 147+lnty);	//d1灯线
 		g.draw(line);
-		System.out.println("2rd");
 	}
 	
 	}
