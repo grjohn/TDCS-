@@ -1,8 +1,10 @@
 package com.blocklist;
+import java.awt.AWTException;
 import java.awt.Color;
 import java.util.Calendar;
 import java.util.GregorianCalendar; 
 
+import com.execution.*;
 import com.model.*;
 
 public class 连锁表 {
@@ -20,7 +22,7 @@ public class 连锁表 {
 		x= new 进站信号机();
 		dc3=new 道岔();
 		adg=new 股道();		dg1=new 股道();		 dg2=new 股道();		dg3=new 股道();	
-		xdg=new 股道();xdg.setclean(0);			//初始xdg股道上有车
+		xdg=new 股道();
 	}
 	private void setCurrentTime() {  
         Calendar calendar = new GregorianCalendar();  
@@ -41,11 +43,11 @@ public class 连锁表 {
         }  
       
 	public String zhengxianjiecheX_S2() throws InterruptedException{   //正线接车操作，涉及画图的页面刷新
+		new Thread(){				//为该函数使用新的线程
+			public void run(){
 		int a1=adg.getblock()+dc3.getblock()+dg2.getblock()+dg3.getblock();  //锁闭条件
 		int a2=adg.getclean()+dg3.getclean()+dg2.getclean();  //空闲条件
-		System.out.println(a1+" "+a2);
-		if(a1==0&&a2==3){
-			Thread.sleep(time);	
+		if(a1==0&&a2==3&&xdg.getclean()==0){	
 			dc3.setdaily(1);			//定位状态
 			adg.setblock(1);			//锁闭
 			dc3.setblock(1);
@@ -53,33 +55,65 @@ public class 连锁表 {
 			dg2.setblock(1);setCurrentTime();
 			System.out.println(hour+":"+minute+":"+second+"---"+"正线接车成功办理！列车开始行驶");
 			x.setcolor(Color.yellow);d1.setcolor(Color.gray);  //灯光颜色转换
-			Thread.sleep(2*time);
+			try {
+				Thread.sleep(2*time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			adg.setclean(0);x.setcolor(Color.red);		//列车进入adg
-			Thread.sleep(time);						
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}						
 			xdg.setblock(0);						//列车出清xdg，自动解锁
-			Thread.sleep(time);
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			dg3.setclean(0);						//列车进入dg3
-			Thread.sleep(time);
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			adg.setblock(0);					//列车出清adg，自动解锁	
-			Thread.sleep(time);
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			dg2.setclean(0);						//列车占用dg2
-			Thread.sleep(time);
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			dg3.setblock(0);dc3.setblock(0);dg2.setblock(0);dg2.setclean(0);d1.setcolor(Color.blue);setCurrentTime();		//列车出清dg3,dg3,dc3,dg2同时解锁,列车到达dg2
-			return hour+":"+minute+":"+second+"---"+"列车成功正线到达股道。";
+			System.out.println(hour+":"+minute+":"+second+"---"+"列车成功正线到达股道。");
 		}
 		
 		else
 			{
 				setCurrentTime();
-				return hour+":"+minute+":"+second+"---"+"不可以办理正线接车";		
+				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理正线接车");		
 			}
+			}}.start();
+			return null;
 	}
 	public String diaoched1_S2() throws InterruptedException{   //d1至s2调车操作，涉及画图的页面刷新
+		new Thread(){				//为该函数使用新的线程
+			public void run(){
 		int a1=dc3.getblock()+dg3.getblock();  //锁闭条件
 		int a2=dg3.getclean();  //空闲条件
-		System.out.println(a1+" "+a2);
-		if(a1==0&&a2==1){
-			Thread.sleep(time);	
+		if(a1==0&&a2==1&&adg.getclean()==0){
 			dc3.setdaily(1);			//定位状态
 						//锁闭
 			dc3.setblock(1);
@@ -87,30 +121,52 @@ public class 连锁表 {
 			dg2.setblock(1);setCurrentTime();
 			System.out.println(hour+":"+minute+":"+second+"---"+"d1至s2调车成功办理！列车开始行驶");
 			d1.setcolor(Color.white); //灯光颜色转换
-			Thread.sleep(2*time);
+			try {
+				Thread.sleep(2*time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			dg3.setclean(0);					//列车进入dg3
-			Thread.sleep(time);
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			adg.setblock(0);d1.setcolor(Color.blue);						//列车出清adg，自动解锁，调车信号机变蓝
-			Thread.sleep(time);
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			dg2.setclean(0);						//列车占用dg2
-			Thread.sleep(time);
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			dg3.setblock(0);dc3.setblock(0);dg2.setblock(0);dg2.setclean(0);setCurrentTime();		//列车出清dg3,dg3,dc3同时解锁,列车到达dg2
-			return hour+":"+minute+":"+second+"---"+"列车成功由d1至s2调车。";
+			System.out.println(hour+":"+minute+":"+second+"---"+"列车成功由d1调车至s2");
 		}
 		
 		else
 			{
 				setCurrentTime();
-				return hour+":"+minute+":"+second+"---"+"不可以办理d1至s2调车";		
+				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理d1至s2调车");		
 			}
+			}}.start();
+		return null;
 	}
 	
 	public String facheches1_x() throws InterruptedException{   //侧线发车操作，涉及画图的页面刷新
+		new Thread(){				//为该函数使用新的线程
+			public void run(){
 		int a1=adg.getblock()+dc3.getblock()+xdg.getblock()+dg3.getblock();  //锁闭条件
 		int a2=adg.getclean()+dg3.getclean()+xdg.getclean();  //空闲条件
-		System.out.println(a1+" "+a2);
-		if(a1==0&&a2==3){
-			Thread.sleep(time);	
+		if(a1==0&&a2==3&&dg1.getclean()==0){	
 			dc3.setdaily(0);			//定位状态
 			adg.setblock(1);			//锁闭
 			dc3.setblock(1);
@@ -118,34 +174,73 @@ public class 连锁表 {
 			xdg.setblock(1);setCurrentTime();
 			System.out.println(hour+":"+minute+":"+second+"---"+"s1发车成功办理！列车开始行驶");
 			s1.setcolor(Color.yellow);d1.setcolor(Color.gray);  //灯光颜色转换
-			Thread.sleep(2*time);
+			try {
+				Thread.sleep(2*time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			dg3.setclean(0);s1.setcolor(Color.red);		//列车进入dg3
-			Thread.sleep(time);						
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}						
 			dg1.setblock(0);					//列车出清dg1，自动解锁
-			Thread.sleep(time);
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			adg.setclean(0);						//列车进入adg
-			Thread.sleep(time);
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			dg3.setblock(0);dc3.setblock(0);			//列车出清dg3，自动解锁	
-			Thread.sleep(time);
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			xdg.setclean(0);						//列车占用xdg
-			Thread.sleep(time);
-			xdg.setblock(0);d1.setcolor(Color.blue);setCurrentTime();		//列车出清xdg同时解锁,列车到达dg2
-			return hour+":"+minute+":"+second+"---"+"列车成功由s1驶离出站。";
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			adg.setblock(0);//列车出清adg同时解锁
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			xdg.setblock(0);d1.setcolor(Color.blue);setCurrentTime();		//列车出清xdg同时解锁
+			System.out.println(hour+":"+minute+":"+second+"---"+"列车成功由s1驶离出站。");
 		}
 		
 		else
 			{
 				setCurrentTime();
-				return hour+":"+minute+":"+second+"---"+"不可以办理侧线发车";		
+				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理侧线发车");		
 			}
+			}}.start();
+			return null;
 	}
 	
 	public String diaoches1_d1() throws InterruptedException{   //s1至d1调车操作，涉及画图的页面刷新
+		new Thread(){				//为该函数使用新的线程
+			public void run(){
 		int a1=dc3.getblock()+dg3.getblock();  //锁闭条件
 		int a2=dg3.getclean();  //空闲条件
-		System.out.println(a1+" "+a2);
-		if(a1==0&&a2==1){
-			Thread.sleep(time);	
+		if(a1==0&&a2==1&&dg1.getclean()==0){	
 			dc3.setdaily(0);			//定位状态
 			adg.setblock(1);			//锁闭
 			dc3.setblock(1);
@@ -153,31 +248,53 @@ public class 连锁表 {
 			setCurrentTime();
 			System.out.println(hour+":"+minute+":"+second+"---"+"s1至d1调车成功办理！列车开始行驶");
 			s1.setcolor(Color.white);d1.setcolor(Color.red); //灯光颜色转换
-			Thread.sleep(2*time);
+			try {
+				Thread.sleep(2*time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			dg3.setclean(0);	//列车进入dg3
-			Thread.sleep(time);						
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}						
 			dg1.setblock(0);s1.setcolor(Color.red);							//列车出清dg1，自动解锁
-			Thread.sleep(time);
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			adg.setclean(0);						//列车进入adg
-			Thread.sleep(time);
-			dg3.setblock(0);dc3.setblock(0);adg.setblock(0);			//列车出清dg3，自动解锁	
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			dg3.setblock(0);dc3.setblock(0);			//列车出清dg3，自动解锁	
 			d1.setcolor(Color.blue);setCurrentTime();		//列车出清xdg同时解锁,列车到达dg2
-			return hour+":"+minute+":"+second+"---"+"列车成功由s1至d1调车。";
+			System.out.println(hour+":"+minute+":"+second+"---"+"列车成功由s1至d1调车。");
 		}
 		
 		else
 			{
 				setCurrentTime();
-				return hour+":"+minute+":"+second+"---"+"不可以办理s1至d1调车";		
+				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理s1至d1调车");		
 			}
+			}}.start();
+			return null;
 	}
 	
 	public String facheches2_x() throws InterruptedException{   //正线发车操作，涉及画图的页面刷新
+		new Thread(){				//为该函数使用新的线程
+			public void run(){
 		int a1=adg.getblock()+dc3.getblock()+xdg.getblock()+dg3.getblock();  //锁闭条件
 		int a2=adg.getclean()+dg3.getclean()+xdg.getclean();  //空闲条件
-		System.out.println(a1+" "+a2);
-		if(a1==0&&a2==3){
-			Thread.sleep(time);	
+		if(a1==0&&a2==3&&dg2.getclean()==0){	
 			dc3.setdaily(1);			//定位状态
 			adg.setblock(1);			//锁闭
 			dc3.setblock(1);
@@ -185,57 +302,120 @@ public class 连锁表 {
 			xdg.setblock(1);setCurrentTime();
 			System.out.println(hour+":"+minute+":"+second+"---"+"s2发车成功办理！列车开始行驶");
 			s2.setcolor(Color.yellow);d1.setcolor(Color.gray);  //灯光颜色转换
-			Thread.sleep(2*time);
+			try {
+				Thread.sleep(2*time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			dg3.setclean(0);s2.setcolor(Color.red);		//列车进入dg3
-			Thread.sleep(time);						
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}						
 			dg2.setblock(0);					//列车出清dg2，自动解锁
-			Thread.sleep(time);
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			adg.setclean(0);					//列车进入adg
-			Thread.sleep(time);
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			dg3.setblock(0);dc3.setblock(0);			//列车出清dg3，自动解锁	
-			Thread.sleep(time);
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			xdg.setclean(0);						//列车占用xdg
-			Thread.sleep(time);
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			adg.setblock(0);					//列车出清adg同时解锁
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			xdg.setblock(0);d1.setcolor(Color.blue);setCurrentTime();		//列车出清xdg同时解锁,列车到达dg2
-			return hour+":"+minute+":"+second+"---"+"列车成功由s2驶离出站。";
+			System.out.println(hour+":"+minute+":"+second+"---"+"列车成功由s2驶离出站。");
 		}
 		
 		else
 			{
 				setCurrentTime();
-				return hour+":"+minute+":"+second+"---"+"不可以办理正线发车";		
+				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理正线发车");		
 			}
+			}}.start();
+			return null;
 	}
 	
 	public String diaoches2_d1() throws InterruptedException{   //s2至d1调车操作，涉及画图的页面刷新
+		new Thread(){				//为该函数使用新的线程
+			public void run(){
 		int a1=dc3.getblock()+dg3.getblock();  //锁闭条件
 		int a2=dg3.getclean();  //空闲条件
 		System.out.println(a1+" "+a2);
-		if(a1==0&&a2==1){
-			Thread.sleep(time);	
+		if(a1==0&&a2==1&&dg2.getclean()==0){	
 			dc3.setdaily(1);			//定位状态
 			dc3.setblock(1);
 			dg3.setblock(1);
+			adg.setblock(1);
 			setCurrentTime();
 			System.out.println(hour+":"+minute+":"+second+"---"+"s2至d1调车办理！列车开始行驶");
 			s2.setcolor(Color.white);d1.setcolor(Color.red); //灯光颜色转换
-			Thread.sleep(2*time);
+			try {
+				Thread.sleep(2*time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			dg3.setclean(0);s2.setcolor(Color.red);	//列车进入dg3
-			Thread.sleep(time);						
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}						
 			dg2.setblock(0);						//列车出清dg2，自动解锁
-			Thread.sleep(time);
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			adg.setclean(0);						//列车进入adg
-			Thread.sleep(time);
-			dg3.setblock(0);dc3.setblock(0);adg.setblock(0);			//列车出清dg3，自动解锁	
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			dg3.setblock(0);dc3.setblock(0);			//列车出清dg3，自动解锁	
 			d1.setcolor(Color.blue);setCurrentTime();	//列车出清xdg同时解锁,列车到达dg2
-			return hour+":"+minute+":"+second+"---"+"列车成功由s2至d1调车。";
+			System.out.println(hour+":"+minute+":"+second+"---"+"列车成功由s2至d1调车。");
 		}
 		
 		else
 			{
 				setCurrentTime();
-				return hour+":"+minute+":"+second+"---"+"不可以办理s2至d1调车";		
+				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理s2至d1调车");		
 			}
+			}}.start();
+			return null;
 	}
 	
 	public void reset(){
@@ -249,86 +429,140 @@ public class 连锁表 {
 	}
 	
 	public String cexianjiecheX_S1() throws InterruptedException{   //侧线接车操作，涉及画图的页面刷新
+		new Thread(){					//为该函数使用新的线程
+			public void run(){
 		int a1=adg.getblock()+dc3.getblock()+dg1.getblock()+dg3.getblock();  //锁闭条件
 		int a2=adg.getclean()+dg3.getclean()+dg1.getclean();  //空闲条件
 		System.out.println(a1+" "+a2);
-		if(a1==0&&a2==3){
-			//j.repaint();
-			Thread.sleep(time);	
-			dc3.setdaily(0);			//定位状态
+		if(a1==0&&a2==3&&xdg.getclean()==0){
+			//j.repaint();	
+			dc3.setdaily(0);			//反位状态
 			adg.setblock(1);			//锁闭
 			dc3.setblock(1);
 			dg3.setblock(1);
 			dg1.setblock(1);setCurrentTime();
 			//j.repaint();
 			System.out.println(hour+":"+minute+":"+second+"---"+"侧线接车成功办理！列车开始行驶");
-			x.setcolor(new Color(255,255,1,255));d1.setcolor(Color.gray); //灯光颜色转换
-			Thread.sleep(2*time);
+			x.setcolor(Color.orange);d1.setcolor(Color.gray); //灯光颜色转换
+			try {
+				Thread.sleep(2*time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			adg.setclean(0);x.setcolor(Color.red);
 			//j.repaint();		//列车进入adg
-			Thread.sleep(time);						
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}						
 			xdg.setblock(0);
 			//j.repaint();						//列车出清xdg，自动解锁
-			Thread.sleep(time);
-			dg3.setclean(0);
-			//j.repaint();						//列车进入dg3
-			Thread.sleep(time);
-			adg.setblock(0);
-			//j.repaint();						//列车出清adg，自动解锁	
-			Thread.sleep(time);
-			dg1.setclean(0);
-		//	j.repaint();						//列车占用dg2
-			Thread.sleep(time);
-			dg3.setblock(0);dc3.setblock(0);dg1.setblock(0);dg1.setclean(0);d1.setcolor(Color.blue);setCurrentTime();
-		//	j.repaint();		//列车出清dg3,dg3,dc3,dg2同时解锁,列车到达dg2
-			return hour+":"+minute+":"+second+"---"+"列车成功侧线到达股道。";
-		}
-		else
-			{
-				setCurrentTime();
-				return hour+":"+minute+":"+second+"---"+"不可以办理侧线接车";
-			}
-	}
-	
-	public String diaoched1_S1(){   //d1至s1调车操作，涉及画图的页面刷新
-		int a1=dc3.getblock()+dg3.getblock();  //锁闭条件
-		int a2=dg1.getclean();  //空闲条件
-		System.out.println(a1+" "+a2);
-		if(a1==0&&a2==1){
-		//	Thread.sleep(time);	
-			定时1秒 d=new 定时1秒();
-			d.dengdai1miao();
-			dc3.setdaily(0);			//定位状态
-			adg.setblock(1);			//锁闭
-			dc3.setblock(1);
-			dg3.setblock(1);
-			dg1.setblock(1);setCurrentTime();
-			System.out.println(hour+":"+minute+":"+second+"---"+"d1至s1调车成功办理！列车开始行驶");
-			d1.setcolor(Color.white);  //灯光颜色转换j.repaint();
 			try {
 				Thread.sleep(time);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			d=new 定时1秒();d.dengdai1miao();
-			dg3.setclean(0);				//列车进入dg3
-		//	Thread.sleep(time);
-			d=new 定时1秒();d.dengdai1miao();
-			adg.setblock(0);					//列车出清adg，自动解锁	
-		//	Thread.sleep(time);
-			d=new 定时1秒();d.dengdai1miao();
-			dg1.setclean(0);				//列车占用dg1
-		//	Thread.sleep(time);
-			d=new 定时1秒();d.dengdai1miao();
-			dg3.setblock(0);dc3.setblock(0);dg1.setblock(0);dg1.setclean(0);d1.setcolor(Color.blue);setCurrentTime();	//列车出清dg3,dg3,dc3,dg2同时解锁,列车到达dg2
-			return hour+":"+minute+":"+second+"---"+"列车成功由d1至s1调车。";
+			dg3.setclean(0);
+			//j.repaint();						//列车进入dg3
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			adg.setblock(0);
+			//j.repaint();						//列车出清adg，自动解锁	
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			dg1.setclean(0);
+		//	j.repaint();						//列车占用dg2
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			dg3.setblock(0);dc3.setblock(0);dg1.setblock(0);dg1.setclean(0);d1.setcolor(Color.blue);setCurrentTime();
+		//	j.repaint();		//列车出清dg3,dg3,dc3,dg2同时解锁,列车到达dg2
+			System.out.println(hour+":"+minute+":"+second+"---"+"列车成功侧线到达股道。");
 		}
 		else
 			{
 				setCurrentTime();
-				return hour+":"+minute+":"+second+"---"+"不可以办理d1至s1调车";
+				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理侧线接车");
 			}
+			}}.start();
+			return null;
+	}
+	
+	public String diaoched1_S1() throws InterruptedException{   //d1至s1调车操作，涉及画图的页面刷新
+		new Thread(){				//为该函数使用新的线程
+			public void run(){
+		int a1=dc3.getblock()+dg3.getblock();  //锁闭条件
+		int a2=dg1.getclean();  //空闲条件
+		System.out.println(a1+" "+a2);
+		if(a1==0&&a2==1&&adg.getclean()==0){
+
+			
+			
+		//	d.dengdai1miao();
+			dc3.setdaily(0);			//定位状态
+			adg.setblock(1);			//锁闭
+			dc3.setblock(1);
+			dg3.setblock(1);
+			dg1.setblock(1);setCurrentTime();
+			System.out.println(hour+":"+minute+":"+second+"---"+"d1至s1调车成功办理！列车开始行驶");
+			d1.setcolor(Color.white); //灯光颜色转换j.repaint();
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		//	d=new 定时1秒();d.dengdai1miao();
+			dg3.setclean(0);				//列车进入dg3
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	//		d=new 定时1秒();d.dengdai1miao();
+			adg.setblock(0);					//列车出清adg，自动解锁	
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	//		d=new 定时1秒();d.dengdai1miao();
+			dg1.setclean(0);				//列车占用dg1
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	//		d=new 定时1秒();d.dengdai1miao();
+			
+			dg3.setblock(0);dc3.setblock(0);d1.setcolor(Color.blue);setCurrentTime();	//列车出清dg3,dg3,dc3,dg2同时解锁,列车到达dg2
+			System.out.println(hour+":"+minute+":"+second+"---"+"列车成功由d1至s1调车。");
+		}
+		else
+			{
+				setCurrentTime();
+				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理d1至s1调车");
+			}
+			}}.start();
+			return null;
 	}
 	
 	}

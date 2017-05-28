@@ -1,8 +1,10 @@
 package com.model;
 import java.util.TimerTask;
-public class 定时1秒 {
+import java.awt.AWTException;
+import java.awt.Robot;
+public class 定时1秒 extends Robot{
 
-	public 定时1秒(){
+	public 定时1秒() throws AWTException{
 //		timer.schedule(new TimerTask() {  
 //            @Override  
 //            public void run() {  
@@ -10,11 +12,12 @@ public class 定时1秒 {
 //            	timer.cancel();
 //            }  
 //        }, 2000, 4000);} 
-	}
-	public void dengdai1miao(){
-		for(int j=0;j<65536;){
-			j++;
-		}
+	
+//	public void dengdai1miao(){
+//		for(int j=0;j<65536;){
+//			j++;
+//		}
+
 	}
 	
 }
