@@ -4,7 +4,7 @@ import com.blocklist.*;
 import java.awt.AWTException;
 import java.awt.BasicStroke;
 import java.awt.Color;
-
+import java.io.*;
 import javax.swing.*;
 
 import java.awt.*;
@@ -19,12 +19,35 @@ import java.util.TimerTask;
 
 public class 执行窗体 extends JFrame{
 	
-	
+	public JTextArea textstates;
 	public 连锁表 l1=new 连锁表();
 	public 站场图 zhanchangtu=new 站场图(l1);
 	private java.util.Timer timer = new java.util.Timer();
+//	private PrintStream printStream;
+//	public class MyOutputStream extends OutputStream{
+//	    public void write(int arg0) throws IOException {
+//      // 写入指定的字节，忽略
+//	    }    
+//	    
+//	    public void write(byte data[]) throws IOException{
+//	      // 追加一行字符串
+//	    	textstates.append(new String(data));
+//	    }
+//	    
+//	    public void write(byte data[], int off, int len) throws IOException {
+//	      // 追加一行字符串中指定的部分，这个最重要
+//	    	textstates.append(new String(data, off, len));
+//	      // 移动TextArea的光标到最后，实现自动滚动
+//	    	textstates.setCaretPosition(textstates.getText().length());
+//	    }
+//	  }
 	
 	public 执行窗体() throws InterruptedException{											//整体窗口的构造函数
+//		printStream = new PrintStream(new MyOutputStream());
+////		// 指定标准输出到自己创建的PrintStream
+//	    System.setOut(printStream);
+//	    System.setErr(printStream);
+		
 		this.setTitle("北京西站站场图(局部)");
 		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		this.setSize(1200, 550);
@@ -37,22 +60,20 @@ public class 执行窗体 extends JFrame{
 		JPanel states = new JPanel();
 		panel.add(states);
 		states.setBackground(new Color(240, 240, 240));
-		states.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-		final JComboBox cbsuobi = new JComboBox();			//负责锁闭的模块
-		cbsuobi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				switch(cbsuobi.getSelectedIndex()){
-				case 0:l1.dg1.setblock(1-l1.dg1.getblock());;break;
-				case 1:l1.dg2.setblock(1-l1.dg2.getblock());;break;
-				case 2:l1.adg.setblock(1-l1.adg.getblock());;break;
-				case 3:l1.xdg.setblock(1-l1.xdg.getblock());;break;
-				case 4:l1.dg3.setblock(1-l1.dg3.getblock());;break;
-				}
-			}
-		});
-		cbsuobi.setModel(new DefaultComboBoxModel(new String[] {"dg1", "dg2", "adg", "xdg", "dc1"}));
-		states.add(cbsuobi);
+		
+				final JComboBox cbsuobi = new JComboBox();			//负责锁闭的模块
+				cbsuobi.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						switch(cbsuobi.getSelectedIndex()){
+						case 0:l1.dg1.setblock(1-l1.dg1.getblock());;break;
+						case 1:l1.dg2.setblock(1-l1.dg2.getblock());;break;
+						case 2:l1.adg.setblock(1-l1.adg.getblock());;break;
+						case 3:l1.xdg.setblock(1-l1.xdg.getblock());;break;
+						case 4:l1.dg3.setblock(1-l1.dg3.getblock());;break;
+						}
+					}
+				});
+				cbsuobi.setModel(new DefaultComboBoxModel(new String[] {"dg1", "dg2", "adg", "xdg", "dc1"}));
 		
 		final JComboBox cbkongxian = new JComboBox();		//负责空闲的模块
 		cbkongxian.addActionListener(new ActionListener() {
@@ -66,13 +87,47 @@ public class 执行窗体 extends JFrame{
 			}
 		});
 		cbkongxian.setModel(new DefaultComboBoxModel(new String[] {"adg", "xdg", "dg1", "dg2"}));
-		states.add(cbkongxian);
 		
-		final JTextArea textstates = new JTextArea(6,30);
+		textstates = new JTextArea(6,30);
 		textstates.setFont(new Font("微软雅黑", Font.PLAIN, 17));
 		textstates.setLineWrap(true);
-		states.add(textstates);
 		textstates.setText("-----实时显示-----\r\n");
+		
+		final JComboBox cblieche = new JComboBox();
+		cblieche.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				switch(cblieche.getSelectedIndex()){
+				case 0:
+					
+					try {
+						l1.cexianjiecheX_S1(textstates);
+				} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();System.out.println("出错！！！！！~！！");
+					}
+					
+				break;
+				case 1:try {
+						l1.zhengxianjiecheX_S2(textstates);
+					} catch (InterruptedException e3) {
+						// TODO Auto-generated catch block
+						e3.printStackTrace();
+					}break;
+				case 2:try {
+						l1.facheches1_x(textstates);
+					} catch (InterruptedException e2) {
+						// TODO Auto-generated catch block
+					e2.printStackTrace();
+					};break;
+				case 3:try {
+						l1.facheches2_x(textstates);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					};break;
+				}
+			}
+		});
 		
 		final JComboBox cbdiaoche = new JComboBox();
 		cbdiaoche.addActionListener(new ActionListener() {
@@ -81,7 +136,7 @@ public class 执行窗体 extends JFrame{
 				case 0:
 					
 					try {
-						textstates.append(l1.diaoched1_S1());
+						l1.diaoched1_S1(textstates);
 				} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();System.out.println("出错！！！！！~！！");
@@ -89,19 +144,19 @@ public class 执行窗体 extends JFrame{
 					
 				break;
 				case 1:try {
-						l1.diaoched1_S2();
+						l1.diaoched1_S2(textstates);
 					} catch (InterruptedException e3) {
 						// TODO Auto-generated catch block
 						e3.printStackTrace();
 					}break;
 				case 2:try {
-						l1.diaoches1_d1();
+						l1.diaoches1_d1(textstates);
 					} catch (InterruptedException e2) {
 						// TODO Auto-generated catch block
 					e2.printStackTrace();
 					};break;
 				case 3:try {
-						l1.diaoches2_d1();
+						l1.diaoches2_d1(textstates);
 					} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -111,45 +166,71 @@ public class 执行窗体 extends JFrame{
 			}
 		);
 		cbdiaoche.setModel(new DefaultComboBoxModel(new String[] {"d1\u81F3s1", "d1\u81F3s2", "s1\u81F3d1", "s2\u81F3d1"}));
-		states.add(cbdiaoche);
-		
-		final JComboBox cblieche = new JComboBox();
-		cblieche.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				switch(cblieche.getSelectedIndex()){
-				case 0:
-					
-					try {
-						l1.cexianjiecheX_S1();
-				} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();System.out.println("出错！！！！！~！！");
-					}
-					
-				break;
-				case 1:try {
-						l1.zhengxianjiecheX_S2();
-					} catch (InterruptedException e3) {
-						// TODO Auto-generated catch block
-						e3.printStackTrace();
-					}break;
-				case 2:try {
-						l1.facheches1_x();
-					} catch (InterruptedException e2) {
-						// TODO Auto-generated catch block
-					e2.printStackTrace();
-					};break;
-				case 3:try {
-						l1.facheches2_x();
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					};break;
-				}
-			}
-		});
 		cblieche.setModel(new DefaultComboBoxModel(new String[] {"x\u81F3s1", "x\u81F3s2", "s1\u81F3x", "s2\u81F3x"}));
-		states.add(cblieche);
+		
+		JLabel lblNewLabel = new JLabel("\u9501\u95ED");
+		
+		JLabel lblNewLabel_1 = new JLabel("\u7A7A\u95F2");
+		
+		JLabel lblNewLabel_2 = new JLabel("\u8C03\u8F66");
+		
+		JLabel lblNewLabel_3 = new JLabel("\u63A5\u8F66\u53D1\u8F66");
+		GroupLayout gl_states = new GroupLayout(states);
+		gl_states.setHorizontalGroup(
+			gl_states.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_states.createSequentialGroup()
+					.addGroup(gl_states.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_states.createSequentialGroup()
+							.addGap(214)
+							.addComponent(cbsuobi, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(cbkongxian, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(5))
+						.addGroup(Alignment.TRAILING, gl_states.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(lblNewLabel)
+							.addGap(27)
+							.addComponent(lblNewLabel_1)
+							.addGap(18)))
+					.addComponent(textstates, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_states.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_states.createSequentialGroup()
+							.addGap(5)
+							.addComponent(cbdiaoche, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_states.createSequentialGroup()
+							.addGap(27)
+							.addComponent(lblNewLabel_2)))
+					.addGap(5)
+					.addGroup(gl_states.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblNewLabel_3)
+						.addComponent(cblieche, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+		);
+		gl_states.setVerticalGroup(
+			gl_states.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_states.createSequentialGroup()
+					.addGap(5)
+					.addComponent(textstates, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_states.createSequentialGroup()
+					.addGap(64)
+					.addComponent(cbdiaoche, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_states.createSequentialGroup()
+					.addGap(39)
+					.addGroup(gl_states.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNewLabel_2)
+						.addComponent(lblNewLabel_3))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(cblieche, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_states.createSequentialGroup()
+					.addGap(39)
+					.addGroup(gl_states.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNewLabel)
+						.addComponent(lblNewLabel_1))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_states.createParallelGroup(Alignment.LEADING)
+						.addComponent(cbsuobi, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbkongxian, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+		);
+		states.setLayout(gl_states);
 //		l1.diaoched1_S1(执行窗体.this);
 		timer.schedule(new TimerTask() {  
 	            @Override  
@@ -158,6 +239,7 @@ public class 执行窗体 extends JFrame{
 	            }  
 	        }, 0, 100); 
 		
+	
 	}
 
 	
@@ -241,7 +323,6 @@ public class 执行窗体 extends JFrame{
 	}
 	
 	}
-	
 }
 
 	

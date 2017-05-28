@@ -3,7 +3,7 @@ import java.awt.AWTException;
 import java.awt.Color;
 import java.util.Calendar;
 import java.util.GregorianCalendar; 
-
+import javax.swing.*;
 import com.execution.*;
 import com.model.*;
 
@@ -42,7 +42,7 @@ public class 连锁表 {
             return second;  
         }  
       
-	public String zhengxianjiecheX_S2() throws InterruptedException{   //正线接车操作，涉及画图的页面刷新
+	public String zhengxianjiecheX_S2(final JTextArea j) throws InterruptedException{   //正线接车操作，涉及画图的页面刷新
 		new Thread(){				//为该函数使用新的线程
 			public void run(){
 		int a1=adg.getblock()+dc3.getblock()+dg2.getblock()+dg3.getblock();  //锁闭条件
@@ -53,7 +53,7 @@ public class 连锁表 {
 			dc3.setblock(1);
 			dg3.setblock(1);
 			dg2.setblock(1);setCurrentTime();
-			System.out.println(hour+":"+minute+":"+second+"---"+"正线接车成功办理！列车开始行驶");
+			j.append(hour+":"+minute+":"+second+"---"+"正线接车成功办理！列车开始行驶\r\n");
 			x.setcolor(Color.yellow);d1.setcolor(Color.gray);  //灯光颜色转换
 			try {
 				Thread.sleep(2*time);
@@ -97,18 +97,18 @@ public class 连锁表 {
 				e.printStackTrace();
 			}
 			dg3.setblock(0);dc3.setblock(0);dg2.setblock(0);dg2.setclean(0);d1.setcolor(Color.blue);setCurrentTime();		//列车出清dg3,dg3,dc3,dg2同时解锁,列车到达dg2
-			System.out.println(hour+":"+minute+":"+second+"---"+"列车成功正线到达股道。");
+			j.append(hour+":"+minute+":"+second+"---"+"列车成功正线到达股道。\r\n");
 		}
 		
 		else
 			{
 				setCurrentTime();
-				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理正线接车");		
+				j.append(hour+":"+minute+":"+second+"---"+"不可以办理正线接车\r\n");		
 			}
 			}}.start();
 			return null;
 	}
-	public String diaoched1_S2() throws InterruptedException{   //d1至s2调车操作，涉及画图的页面刷新
+	public String diaoched1_S2(final JTextArea j) throws InterruptedException{   //d1至s2调车操作，涉及画图的页面刷新
 		new Thread(){				//为该函数使用新的线程
 			public void run(){
 		int a1=dc3.getblock()+dg3.getblock();  //锁闭条件
@@ -119,7 +119,7 @@ public class 连锁表 {
 			dc3.setblock(1);
 			dg3.setblock(1);
 			dg2.setblock(1);setCurrentTime();
-			System.out.println(hour+":"+minute+":"+second+"---"+"d1至s2调车成功办理！列车开始行驶");
+			j.append(hour+":"+minute+":"+second+"---"+"d1至s2调车成功办理！列车开始行驶\r\n");
 			d1.setcolor(Color.white); //灯光颜色转换
 			try {
 				Thread.sleep(2*time);
@@ -149,19 +149,19 @@ public class 连锁表 {
 				e.printStackTrace();
 			}
 			dg3.setblock(0);dc3.setblock(0);dg2.setblock(0);dg2.setclean(0);setCurrentTime();		//列车出清dg3,dg3,dc3同时解锁,列车到达dg2
-			System.out.println(hour+":"+minute+":"+second+"---"+"列车成功由d1调车至s2");
+			j.append(hour+":"+minute+":"+second+"---"+"列车成功由d1调车至s2\r\n");
 		}
 		
 		else
 			{
 				setCurrentTime();
-				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理d1至s2调车");		
+				j.append(hour+":"+minute+":"+second+"---"+"不可以办理d1至s2调车\r\n");		
 			}
 			}}.start();
 		return null;
 	}
 	
-	public String facheches1_x() throws InterruptedException{   //侧线发车操作，涉及画图的页面刷新
+	public String facheches1_x(final JTextArea j) throws InterruptedException{   //侧线发车操作，涉及画图的页面刷新
 		new Thread(){				//为该函数使用新的线程
 			public void run(){
 		int a1=adg.getblock()+dc3.getblock()+xdg.getblock()+dg3.getblock();  //锁闭条件
@@ -172,7 +172,7 @@ public class 连锁表 {
 			dc3.setblock(1);
 			dg3.setblock(1);
 			xdg.setblock(1);setCurrentTime();
-			System.out.println(hour+":"+minute+":"+second+"---"+"s1发车成功办理！列车开始行驶");
+			j.append(hour+":"+minute+":"+second+"---"+"s1发车成功办理！列车开始行驶\r\n");
 			s1.setcolor(Color.yellow);d1.setcolor(Color.gray);  //灯光颜色转换
 			try {
 				Thread.sleep(2*time);
@@ -223,19 +223,19 @@ public class 连锁表 {
 				e.printStackTrace();
 			}
 			xdg.setblock(0);d1.setcolor(Color.blue);setCurrentTime();		//列车出清xdg同时解锁
-			System.out.println(hour+":"+minute+":"+second+"---"+"列车成功由s1驶离出站。");
+			j.append(hour+":"+minute+":"+second+"---"+"列车成功由s1驶离出站。\r\n");
 		}
 		
 		else
 			{
 				setCurrentTime();
-				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理侧线发车");		
+				j.append(hour+":"+minute+":"+second+"---"+"不可以办理侧线发车\r\n");		
 			}
 			}}.start();
 			return null;
 	}
 	
-	public String diaoches1_d1() throws InterruptedException{   //s1至d1调车操作，涉及画图的页面刷新
+	public String diaoches1_d1(final JTextArea j) throws InterruptedException{   //s1至d1调车操作，涉及画图的页面刷新
 		new Thread(){				//为该函数使用新的线程
 			public void run(){
 		int a1=dc3.getblock()+dg3.getblock();  //锁闭条件
@@ -246,7 +246,7 @@ public class 连锁表 {
 			dc3.setblock(1);
 			dg3.setblock(1);
 			setCurrentTime();
-			System.out.println(hour+":"+minute+":"+second+"---"+"s1至d1调车成功办理！列车开始行驶");
+			j.append(hour+":"+minute+":"+second+"---"+"s1至d1调车成功办理！列车开始行驶\r\n");
 			s1.setcolor(Color.white);d1.setcolor(Color.red); //灯光颜色转换
 			try {
 				Thread.sleep(2*time);
@@ -277,19 +277,19 @@ public class 连锁表 {
 			}
 			dg3.setblock(0);dc3.setblock(0);			//列车出清dg3，自动解锁	
 			d1.setcolor(Color.blue);setCurrentTime();		//列车出清xdg同时解锁,列车到达dg2
-			System.out.println(hour+":"+minute+":"+second+"---"+"列车成功由s1至d1调车。");
+			j.append(hour+":"+minute+":"+second+"---"+"列车成功由s1至d1调车。\r\n");
 		}
 		
 		else
 			{
 				setCurrentTime();
-				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理s1至d1调车");		
+				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理s1至d1调车\r\n");		
 			}
 			}}.start();
 			return null;
 	}
 	
-	public String facheches2_x() throws InterruptedException{   //正线发车操作，涉及画图的页面刷新
+	public String facheches2_x(final JTextArea j) throws InterruptedException{   //正线发车操作，涉及画图的页面刷新
 		new Thread(){				//为该函数使用新的线程
 			public void run(){
 		int a1=adg.getblock()+dc3.getblock()+xdg.getblock()+dg3.getblock();  //锁闭条件
@@ -300,7 +300,7 @@ public class 连锁表 {
 			dc3.setblock(1);
 			dg3.setblock(1);
 			xdg.setblock(1);setCurrentTime();
-			System.out.println(hour+":"+minute+":"+second+"---"+"s2发车成功办理！列车开始行驶");
+			j.append(hour+":"+minute+":"+second+"---"+"s2发车成功办理！列车开始行驶\r\n");
 			s2.setcolor(Color.yellow);d1.setcolor(Color.gray);  //灯光颜色转换
 			try {
 				Thread.sleep(2*time);
@@ -351,19 +351,19 @@ public class 连锁表 {
 				e.printStackTrace();
 			}
 			xdg.setblock(0);d1.setcolor(Color.blue);setCurrentTime();		//列车出清xdg同时解锁,列车到达dg2
-			System.out.println(hour+":"+minute+":"+second+"---"+"列车成功由s2驶离出站。");
+			j.append(hour+":"+minute+":"+second+"---"+"列车成功由s2驶离出站。\r\n");
 		}
 		
 		else
 			{
 				setCurrentTime();
-				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理正线发车");		
+				j.append(hour+":"+minute+":"+second+"---"+"不可以办理正线发车\r\n");		
 			}
 			}}.start();
 			return null;
 	}
 	
-	public String diaoches2_d1() throws InterruptedException{   //s2至d1调车操作，涉及画图的页面刷新
+	public String diaoches2_d1(final JTextArea j) throws InterruptedException{   //s2至d1调车操作，涉及画图的页面刷新
 		new Thread(){				//为该函数使用新的线程
 			public void run(){
 		int a1=dc3.getblock()+dg3.getblock();  //锁闭条件
@@ -375,7 +375,7 @@ public class 连锁表 {
 			dg3.setblock(1);
 			adg.setblock(1);
 			setCurrentTime();
-			System.out.println(hour+":"+minute+":"+second+"---"+"s2至d1调车办理！列车开始行驶");
+			j.append(hour+":"+minute+":"+second+"---"+"s2至d1调车办理！列车开始行驶\r\n");
 			s2.setcolor(Color.white);d1.setcolor(Color.red); //灯光颜色转换
 			try {
 				Thread.sleep(2*time);
@@ -406,13 +406,13 @@ public class 连锁表 {
 			}
 			dg3.setblock(0);dc3.setblock(0);			//列车出清dg3，自动解锁	
 			d1.setcolor(Color.blue);setCurrentTime();	//列车出清xdg同时解锁,列车到达dg2
-			System.out.println(hour+":"+minute+":"+second+"---"+"列车成功由s2至d1调车。");
+			j.append(hour+":"+minute+":"+second+"---"+"列车成功由s2至d1调车。\r\n");
 		}
 		
 		else
 			{
 				setCurrentTime();
-				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理s2至d1调车");		
+				j.append(hour+":"+minute+":"+second+"---"+"不可以办理s2至d1调车\r\n");		
 			}
 			}}.start();
 			return null;
@@ -428,7 +428,7 @@ public class 连锁表 {
 		xdg=new 股道();xdg.setclean(0);	
 	}
 	
-	public String cexianjiecheX_S1() throws InterruptedException{   //侧线接车操作，涉及画图的页面刷新
+	public String cexianjiecheX_S1(final JTextArea j) throws InterruptedException{   //侧线接车操作，涉及画图的页面刷新
 		new Thread(){					//为该函数使用新的线程
 			public void run(){
 		int a1=adg.getblock()+dc3.getblock()+dg1.getblock()+dg3.getblock();  //锁闭条件
@@ -442,7 +442,7 @@ public class 连锁表 {
 			dg3.setblock(1);
 			dg1.setblock(1);setCurrentTime();
 			//j.repaint();
-			System.out.println(hour+":"+minute+":"+second+"---"+"侧线接车成功办理！列车开始行驶");
+			j.append(hour+":"+minute+":"+second+"---"+"侧线接车成功办理！列车开始行驶\r\n");
 			x.setcolor(Color.orange);d1.setcolor(Color.gray); //灯光颜色转换
 			try {
 				Thread.sleep(2*time);
@@ -492,18 +492,18 @@ public class 连锁表 {
 			}
 			dg3.setblock(0);dc3.setblock(0);dg1.setblock(0);dg1.setclean(0);d1.setcolor(Color.blue);setCurrentTime();
 		//	j.repaint();		//列车出清dg3,dg3,dc3,dg2同时解锁,列车到达dg2
-			System.out.println(hour+":"+minute+":"+second+"---"+"列车成功侧线到达股道。");
+			j.append(hour+":"+minute+":"+second+"---"+"列车成功侧线到达股道。\r\n");
 		}
 		else
 			{
 				setCurrentTime();
-				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理侧线接车");
+				j.append(hour+":"+minute+":"+second+"---"+"不可以办理侧线接车\r\n");
 			}
 			}}.start();
 			return null;
 	}
 	
-	public String diaoched1_S1() throws InterruptedException{   //d1至s1调车操作，涉及画图的页面刷新
+	public String diaoched1_S1(final JTextArea j) throws InterruptedException{   //d1至s1调车操作，涉及画图的页面刷新
 		new Thread(){				//为该函数使用新的线程
 			public void run(){
 		int a1=dc3.getblock()+dg3.getblock();  //锁闭条件
@@ -519,7 +519,7 @@ public class 连锁表 {
 			dc3.setblock(1);
 			dg3.setblock(1);
 			dg1.setblock(1);setCurrentTime();
-			System.out.println(hour+":"+minute+":"+second+"---"+"d1至s1调车成功办理！列车开始行驶");
+			j.append(hour+":"+minute+":"+second+"---"+"d1至s1调车成功办理！列车开始行驶\r\n");
 			d1.setcolor(Color.white); //灯光颜色转换j.repaint();
 			try {
 				Thread.sleep(time);
@@ -554,12 +554,12 @@ public class 连锁表 {
 	//		d=new 定时1秒();d.dengdai1miao();
 			
 			dg3.setblock(0);dc3.setblock(0);d1.setcolor(Color.blue);setCurrentTime();	//列车出清dg3,dg3,dc3,dg2同时解锁,列车到达dg2
-			System.out.println(hour+":"+minute+":"+second+"---"+"列车成功由d1至s1调车。");
+			j.append(hour+":"+minute+":"+second+"---"+"列车成功由d1至s1调车。\r\n");
 		}
 		else
 			{
 				setCurrentTime();
-				System.out.println(hour+":"+minute+":"+second+"---"+"不可以办理d1至s1调车");
+				j.append(hour+":"+minute+":"+second+"---"+"不可以办理d1至s1调车\r\n");
 			}
 			}}.start();
 			return null;
