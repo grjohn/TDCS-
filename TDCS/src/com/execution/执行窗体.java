@@ -1,20 +1,15 @@
 package com.execution;
-import com.blocklist.*;
 
-import java.awt.AWTException;
+import com.blocklist.*;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.io.*;
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.geom.Line2D;  
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-
 import java.util.TimerTask; 
 
 public class 执行窗体 extends JFrame{
@@ -23,32 +18,9 @@ public class 执行窗体 extends JFrame{
 	public 连锁表 l1=new 连锁表();
 	public 站场图 zhanchangtu=new 站场图(l1);
 	private java.util.Timer timer = new java.util.Timer();
-//	private PrintStream printStream;
-//	public class MyOutputStream extends OutputStream{
-//	    public void write(int arg0) throws IOException {
-//      // 写入指定的字节，忽略
-//	    }    
-//	    
-//	    public void write(byte data[]) throws IOException{
-//	      // 追加一行字符串
-//	    	textstates.append(new String(data));
-//	    }
-//	    
-//	    public void write(byte data[], int off, int len) throws IOException {
-//	      // 追加一行字符串中指定的部分，这个最重要
-//	    	textstates.append(new String(data, off, len));
-//	      // 移动TextArea的光标到最后，实现自动滚动
-//	    	textstates.setCaretPosition(textstates.getText().length());
-//	    }
-//	  }
 	
-	public 执行窗体() throws InterruptedException{											//整体窗口的构造函数
-//		printStream = new PrintStream(new MyOutputStream());
-////		// 指定标准输出到自己创建的PrintStream
-//	    System.setOut(printStream);
-//	    System.setErr(printStream);
-		
-		this.setTitle("北京西站站场图(局部)");
+	public 执行窗体() throws InterruptedException{											//整体窗口的构造函数		
+		this.setTitle("北京西站站场图(菊部)");
 		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		this.setSize(1200, 550);
 		this.setVisible(true);
@@ -232,7 +204,7 @@ public class 执行窗体 extends JFrame{
 		);
 		states.setLayout(gl_states);
 //		l1.diaoched1_S1(执行窗体.this);
-		timer.schedule(new TimerTask() {  
+		timer.schedule(new TimerTask() {  //定时器，刷新屏幕
 	            @Override  
 	            public void run() {  
 	                repaint();  
