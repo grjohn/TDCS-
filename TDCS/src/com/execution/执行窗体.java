@@ -324,6 +324,3 @@ public class Ö´ÐÐ´°Ìå extends JFrame{
 	
 	}
 }
-
-	
-	

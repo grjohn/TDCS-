@@ -53,7 +53,7 @@ public class 连锁表 {
 			dc3.setblock(1);
 			dg3.setblock(1);
 			dg2.setblock(1);setCurrentTime();
-			j.append(hour+":"+minute+":"+second+"---"+"正线接车成功办理！列车开始行驶\r\n");
+			j.setText(hour+":"+minute+":"+second+"---"+"正线接车成功办理！列车开始行驶\r\n");
 			x.setcolor(Color.yellow);d1.setcolor(Color.gray);  //灯光颜色转换
 			try {
 				Thread.sleep(2*time);
@@ -119,7 +119,7 @@ public class 连锁表 {
 			dc3.setblock(1);
 			dg3.setblock(1);
 			dg2.setblock(1);setCurrentTime();
-			j.append(hour+":"+minute+":"+second+"---"+"d1至s2调车成功办理！列车开始行驶\r\n");
+			j.setText(hour+":"+minute+":"+second+"---"+"d1至s2调车成功办理！列车开始行驶\r\n");
 			d1.setcolor(Color.white); //灯光颜色转换
 			try {
 				Thread.sleep(2*time);
@@ -172,7 +172,7 @@ public class 连锁表 {
 			dc3.setblock(1);
 			dg3.setblock(1);
 			xdg.setblock(1);setCurrentTime();
-			j.append(hour+":"+minute+":"+second+"---"+"s1发车成功办理！列车开始行驶\r\n");
+			j.setText(hour+":"+minute+":"+second+"---"+"s1发车成功办理！列车开始行驶\r\n");
 			s1.setcolor(Color.yellow);d1.setcolor(Color.gray);  //灯光颜色转换
 			try {
 				Thread.sleep(2*time);
@@ -246,7 +246,7 @@ public class 连锁表 {
 			dc3.setblock(1);
 			dg3.setblock(1);
 			setCurrentTime();
-			j.append(hour+":"+minute+":"+second+"---"+"s1至d1调车成功办理！列车开始行驶\r\n");
+			j.setText(hour+":"+minute+":"+second+"---"+"s1至d1调车成功办理！列车开始行驶\r\n");
 			s1.setcolor(Color.white);d1.setcolor(Color.red); //灯光颜色转换
 			try {
 				Thread.sleep(2*time);
@@ -300,7 +300,7 @@ public class 连锁表 {
 			dc3.setblock(1);
 			dg3.setblock(1);
 			xdg.setblock(1);setCurrentTime();
-			j.append(hour+":"+minute+":"+second+"---"+"s2发车成功办理！列车开始行驶\r\n");
+			j.setText(hour+":"+minute+":"+second+"---"+"s2发车成功办理！列车开始行驶\r\n");
 			s2.setcolor(Color.yellow);d1.setcolor(Color.gray);  //灯光颜色转换
 			try {
 				Thread.sleep(2*time);
@@ -375,7 +375,7 @@ public class 连锁表 {
 			dg3.setblock(1);
 			adg.setblock(1);
 			setCurrentTime();
-			j.append(hour+":"+minute+":"+second+"---"+"s2至d1调车办理！列车开始行驶\r\n");
+			j.setText(hour+":"+minute+":"+second+"---"+"s2至d1调车办理！列车开始行驶\r\n");
 			s2.setcolor(Color.white);d1.setcolor(Color.red); //灯光颜色转换
 			try {
 				Thread.sleep(2*time);
@@ -442,7 +442,7 @@ public class 连锁表 {
 			dg3.setblock(1);
 			dg1.setblock(1);setCurrentTime();
 			//j.repaint();
-			j.append(hour+":"+minute+":"+second+"---"+"侧线接车成功办理！列车开始行驶\r\n");
+			j.setText(hour+":"+minute+":"+second+"---"+"侧线接车成功办理！列车开始行驶\r\n");
 			x.setcolor(Color.orange);d1.setcolor(Color.gray); //灯光颜色转换
 			try {
 				Thread.sleep(2*time);
@@ -519,7 +519,7 @@ public class 连锁表 {
 			dc3.setblock(1);
 			dg3.setblock(1);
 			dg1.setblock(1);setCurrentTime();
-			j.append(hour+":"+minute+":"+second+"---"+"d1至s1调车成功办理！列车开始行驶\r\n");
+			j.setText(hour+":"+minute+":"+second+"---"+"d1至s1调车成功办理！列车开始行驶\r\n");
 			d1.setcolor(Color.white); //灯光颜色转换j.repaint();
 			try {
 				Thread.sleep(time);
